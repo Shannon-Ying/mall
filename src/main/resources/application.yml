@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: @application.name@
+  profiles:
+    active: @env@
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  datasource:
+    druid:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      initialSize: 50
+      minIdle: 50
+      maxActive: 300
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      filters: stat,wall
+      maxPoolPreparedStatementPerConnectionSize: 20
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      use-unfair-lock: false
+# MyBatis配置
+mybatis:
+  typeAliasesPackage: com.xuanhui.mall.entity
+  mapperLocations: classpath:/mapper/**/*.xml
+  configLocation: classpath:/mybatis-config.xml
+
+server:
+  port: @server.port@
+  tomcat:
+    threads:
+      min-spare: 100
+      max: 400
+    accept-count: 400
+    mbeanregistry:
+      enabled: true
+
+
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+  page-size-zero: false
+

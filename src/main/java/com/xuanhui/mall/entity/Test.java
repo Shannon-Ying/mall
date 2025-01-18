@@ -19,20 +19,4 @@ public class Test {
      */
     private String code;
 
-    /**
-     * 原因
-     */
-    private String reason;
-
-    /**
-     * 解决方式
-     */
-    private String solution;
-
-    /**
-     * 语言码
-     */
-    private String languageCode;
-
-    private String codeDesc;
 }

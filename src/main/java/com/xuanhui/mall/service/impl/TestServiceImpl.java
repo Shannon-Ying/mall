@@ -18,13 +18,13 @@ public class TestServiceImpl implements TestService {
 
 
     @Override
-    public int add(Test errorInfo) {
-        return mapper.insert(errorInfo);
+    public int add(Test test) {
+        return mapper.insert(test);
     }
 
     @Override
-    public int update(Test errorInfo) {
-        return mapper.updateByPrimaryKeySelective(errorInfo);
+    public int update(Test test) {
+        return mapper.updateByPrimaryKeySelective(test);
     }
 
     @Override

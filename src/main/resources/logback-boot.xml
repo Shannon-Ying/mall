@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="logPattern" value="%date|%thread|%X{uid}|%level{8}|%logger{50}|%msg %xEx ------%n"/>
+
+
+
+    <!-- 开发、测试环境 -->
+    <springProfile name="local, dev,test, beta,snapshot">
+        <appender name="stdoutAppender" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>${logPattern}</pattern>
+                <charset>utf8</charset>
+            </encoder>
+        </appender>
+
+        <root>
+            <level value="info" />
+            <appender-ref ref="stdoutAppender" />
+        </root>
+
+        <logger name="com.renpho" level="DEBUG" />
+    </springProfile>
+
+
+    <!-- 生产环境 -->
+    <springProfile name="test,snapshot,prod">
+        <springProperty scope="context" name="log.base" source="log.base" />
+        <springProperty scope="context" name="log.proj" source="log.proj" />
+
+        <appender name="commonAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${log.base}/${log.proj}.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${log.base}/${log.proj}_%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+                <maxHistory>7</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>200MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>${logPattern}</pattern>
+                <charset>utf8</charset>
+            </encoder>
+        </appender>
+        <appender name="asyncCommonAppender" class="ch.qos.logback.classic.AsyncAppender">
+            <discardingThreshold>0</discardingThreshold>
+            <queueSize>1024</queueSize>
+            <appender-ref ref="commonAppender" />
+        </appender>
+
+        <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${log.base}/${log.proj}-error.log</File>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${log.base}/${log.proj}-error_%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+                <maxHistory>7</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>200MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>${logPattern}</pattern>
+                <charset>utf8</charset>
+            </encoder>
+        </appender>
+        <appender name="asyncErrorAppender" class="ch.qos.logback.classic.AsyncAppender">
+            <discardingThreshold>0</discardingThreshold>
+            <queueSize>1024</queueSize>
+            <appender-ref ref="errorAppender" />
+        </appender>
+
+        <root>
+            <level value="info" />
+            <appender-ref ref="asyncCommonAppender" />
+            <appender-ref ref="asyncErrorAppender" />
+        </root>
+
+        <logger name="com.renpho" level="INFO" />
+    </springProfile>
+
+</configuration>

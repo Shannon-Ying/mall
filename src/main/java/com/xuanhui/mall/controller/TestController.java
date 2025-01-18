@@ -17,13 +17,13 @@ public class TestController {
 
 
     @PostMapping("add")
-    public int add(@RequestBody Test errorInfo) {
-        return service.add(errorInfo);
+    public int add(@RequestBody Test test) {
+        return service.add(test);
     }
 
     @PostMapping("update")
-    public int update(@RequestBody Test errorInfo) {
-        return service.update(errorInfo);
+    public int update(@RequestBody Test test) {
+        return service.update(test);
     }
 
     @PostMapping("del")

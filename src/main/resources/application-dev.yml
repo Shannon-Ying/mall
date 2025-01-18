@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    druid:
+      url: @jdbc.url@
+      username: @jdbc.username@
+      password: @jdbc.password@
+  redis:
+    database: 0
+    password:
+    port: 6379
+    host: 120.79.62.132
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT
+
+logging:
+  level:
+    com.xuanhui.mall.mapper: debug
+  config: classpath:logback-boot.xml
+
+# token配置
+token:
+  # 令牌密钥
+  secret: abcdefghijklmnopqrstuvwxyz
+
+
+
+# 非开发环境的日志地址. 参见 logback-spring.xml
+log:
+  base: /home/ec2-user/renpho-health/logs
+  proj: renphoHealth
+  # output: 172.31.75.153:5044  #统一日志输出的地址
