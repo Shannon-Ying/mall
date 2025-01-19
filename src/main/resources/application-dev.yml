@@ -6,9 +6,10 @@ spring:
       password: @jdbc.password@
   redis:
     database: 0
-    password:
     port: 6379
     host: 120.79.62.132
+    password: lyyrooYui10kt
+
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -28,6 +29,6 @@ token:
 
 # 非开发环境的日志地址. 参见 logback-spring.xml
 log:
-  base: /home/ec2-user/renpho-health/logs
-  proj: renphoHealth
+  base: /home/ec2-user/mall/logs
+  proj: mall
   # output: 172.31.75.153:5044  #统一日志输出的地址
