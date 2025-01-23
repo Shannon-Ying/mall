@@ -4,8 +4,8 @@ import cn.hutool.core.util.RandomUtil;
 import com.xuanhui.mall.entity.HotProduct;
 import com.xuanhui.mall.mapper.HotProductMapper;
 import com.xuanhui.mall.service.HotProductService;
+import com.xuanhui.mall.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ import java.util.List;
 public class HotProductServiceImpl implements HotProductService {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisUtil redisUtil;
 
     @Autowired
     private HotProductMapper hotProductMapper;
@@ -32,8 +32,7 @@ public class HotProductServiceImpl implements HotProductService {
         }
 
         hotProductMapper.insertSelective(hotProduct);
-        // opsForValue 代表了String数据类型
-        redisTemplate.opsForValue().set("hotProduct:" + hotProduct.getId(), hotProduct);
+        redisUtil.setObject(" :" + hotProduct.getId(), hotProduct);
     }
 
     @Override
@@ -48,11 +47,11 @@ public class HotProductServiceImpl implements HotProductService {
         }
         Long id = System.currentTimeMillis() - 10 * 60 * 1000L;
         hotProduct.setId(id);
-        redisTemplate.delete("hotProduct:" + id);
+        redisUtil.del("hotProduct:" + id);
 
         int res = hotProductMapper.updateByPrimaryKeySelective(hotProduct);
         if (res == 1) {
-            redisTemplate.opsForValue().set("hotProduct:" + id, hotProduct);
+            redisUtil.setObject("hotProduct:" + id, hotProduct);
 
         }
     }
